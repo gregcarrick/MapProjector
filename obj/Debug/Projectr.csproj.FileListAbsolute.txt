@@ -1,9 +1,0 @@
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\bin\Debug\MapProjector.exe.config
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.exe
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.pdb
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\bin\Debug\MapProjector.exe
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\bin\Debug\MapProjector.pdb
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Projectr.csprojResolveAssemblyReference.cache
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.Properties.Resources.resources
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Projectr.csproj.GenerateResource.Cache
-D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Projectr.ProjectrWindow.resources
