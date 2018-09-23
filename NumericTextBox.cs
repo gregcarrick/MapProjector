@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace Projectr
@@ -47,7 +49,11 @@ namespace Projectr
             }
             set
             {
-                this.Text = value == 0 ? null : value.ToString();
+                string textValue = value == 0 ? null : value.ToString();
+                if (this.Text != textValue)
+                {
+                    this.Text = textValue;
+                }
             }
         }
 
@@ -74,6 +80,27 @@ namespace Projectr
                 e.Handled = true;
             }
         }
+
+        /// <inheritdoc/>
+        //public override string Text
+        //{
+        //    get
+        //    {
+        //        return base.Text;
+        //    }
+        //    set
+        //    {
+        //        if (value != base.Text)
+        //        {
+        //            double doubleValue;
+        //            if (Double.TryParse(value, out doubleValue))
+        //            {
+        //                base.Text = value;
+        //                this.Value = doubleValue;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }
 

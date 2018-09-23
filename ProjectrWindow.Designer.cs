@@ -7,7 +7,7 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private Projector.ProjectrDataSource dataSource;
+        private ProjectrDataSource dataSource;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -19,7 +19,43 @@
             {
                 if (this.orthographicToolStripMenuItem != null)
                 {
-                    this.orthographicToolStripMenuItem.Click -= orthographicToolStripMenuItem_Click;
+                    this.orthographicToolStripMenuItem.CheckedChanged -= orthographicToolStripMenuItem_Click;
+                }
+                if (this.a2PaperButton != null)
+                {
+                    this.a2PaperButton.CheckedChanged -= a2PaperButton_CheckedChanged;
+                }
+                if (this.a3PaperButton != null)
+                {
+                    this.a3PaperButton.CheckedChanged -= a3PaperButton_CheckedChanged;
+                }
+                if (this.a4PaperButton != null)
+                {
+                    this.a4PaperButton.CheckedChanged -= a4PaperButton_CheckedChanged;
+                }
+                if (this.customPaperButton != null)
+                {
+                    this.customPaperButton.CheckedChanged -= customPaperButton_CheckedChanged;
+                }
+                if (this.radioButton0_5 != null)
+                {
+                    this.radioButton0_5.CheckedChanged -= radioButton0_5_CheckedChanged;
+                }
+                if (this.radioButton1 != null)
+                {
+                    this.radioButton1.CheckedChanged -= radioButton1_CheckedChanged;
+                }
+                if (this.radioButton2 != null)
+                {
+                    this.radioButton2.CheckedChanged -= radioButton2_CheckedChanged;
+                }
+                if (this.radioButton5 != null)
+                {
+                    this.radioButton5.CheckedChanged -= radioButton5_CheckedChanged;
+                }
+                if (this.radioButton10 != null)
+                {
+                    this.radioButton10.CheckedChanged -= radioButton10_CheckedChanged;
                 }
                 components.Dispose();
             }
@@ -70,7 +106,7 @@
             this.paperGroupBox.SuspendLayout();
             this.resultsGroupBox.SuspendLayout();
             this.SuspendLayout();
-            this.dataSource = new Projector.ProjectrDataSource();
+            this.dataSource = new ProjectrDataSource();
             // 
             // menuStrip1
             // 
@@ -353,6 +389,7 @@
             // 
             // westTextBox
             // 
+            this.westTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.dataSource, "West", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.westTextBox.Font = new System.Drawing.Font("Consolas", 9F);
             this.westTextBox.Location = new System.Drawing.Point(54, 71);
             this.westTextBox.MaximumValue = 180;
@@ -365,6 +402,7 @@
             // 
             // northTextBox
             // 
+            this.northTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.dataSource, "North", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.northTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.northTextBox.Location = new System.Drawing.Point(54, 19);
             this.northTextBox.MaximumValue = 90;
@@ -377,6 +415,7 @@
             // 
             // southTextBox
             // 
+            this.southTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.dataSource, "South", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.southTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.southTextBox.Location = new System.Drawing.Point(54, 45);
             this.southTextBox.MaximumValue = 90;
@@ -389,6 +428,7 @@
             // 
             // eastTextBox
             // 
+            this.eastTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.dataSource, "East", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.eastTextBox.Font = new System.Drawing.Font("Consolas", 9F);
             this.eastTextBox.Location = new System.Drawing.Point(54, 97);
             this.eastTextBox.MaximumValue = 180;
@@ -410,6 +450,8 @@
             this.Controls.Add(this.intervalGroupBox);
             this.Controls.Add(this.boundsGroupBox);
             this.Controls.Add(this.menuStrip1);
+            this.DataBindings.Add(new System.Windows.Forms.Binding("PaperSize", this.dataSource, "PaperSize", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.DataBindings.Add(new System.Windows.Forms.Binding("Projection", this.dataSource, "Projection", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ProjectrWindow";

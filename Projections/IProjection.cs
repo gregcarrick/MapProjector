@@ -1,6 +1,6 @@
 ﻿namespace Projectr.Projections
 {
-    interface IProjection
+    public interface IProjection
     {
         Point ConvertToCart(Point geo);
 

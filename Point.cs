@@ -2,7 +2,7 @@
 
 namespace Projectr
 {
-    struct Point
+    public struct Point
     {
         private double x;
         private double y;
