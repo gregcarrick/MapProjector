@@ -21,14 +21,25 @@ namespace Projectr
             this.paperGroupBox.DataBindings.Add(new Binding("Selected", this.dataSource, "PaperSize", true, DataSourceUpdateMode.OnPropertyChanged));
 
             this.orthographicToolStripMenuItem.Click += orthographicToolStripMenuItem_Click;
+            this.equirectangularToolStripMenuItem.Click += equirectangularToolStripMenuItem_Click;
             this.projectButton.Click += projectButton_Click;
 
-            SetProjection(new Orthographic());
+            SetProjection(new Equirectangular());
+            this.equirectangularToolStripMenuItem.Checked = true;
         }
 
         private void orthographicToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.equirectangularToolStripMenuItem.Checked = false;
+            this.orthographicToolStripMenuItem.Checked = true;
             SetProjection(new Orthographic());
+        }
+
+        private void equirectangularToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.equirectangularToolStripMenuItem.Checked = true;
+            this.orthographicToolStripMenuItem.Checked = false;
+            SetProjection(new Equirectangular());
         }
 
         private void projectButton_Click(object sender, EventArgs e)

@@ -19,7 +19,11 @@
             {
                 if (this.orthographicToolStripMenuItem != null)
                 {
-                    this.orthographicToolStripMenuItem.CheckedChanged -= orthographicToolStripMenuItem_Click;
+                    this.orthographicToolStripMenuItem.Click -= orthographicToolStripMenuItem_Click;
+                }
+                if (this.equirectangularToolStripMenuItem != null)
+                {
+                    this.equirectangularToolStripMenuItem.Click -= equirectangularToolStripMenuItem_Click;
                 }
                 components.Dispose();
             }
@@ -37,6 +41,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.chooseProjectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orthographicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.equirectangularToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.northLabel = new System.Windows.Forms.Label();
             this.eastLabel = new System.Windows.Forms.Label();
             this.westLabel = new System.Windows.Forms.Label();
@@ -84,8 +89,11 @@
             // 
             // chooseProjectionToolStripMenuItem
             // 
-            this.chooseProjectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.orthographicToolStripMenuItem});
+            this.chooseProjectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[]
+            {
+                this.orthographicToolStripMenuItem,
+                this.equirectangularToolStripMenuItem
+            });
             this.chooseProjectionToolStripMenuItem.Name = "chooseProjectionToolStripMenuItem";
             this.chooseProjectionToolStripMenuItem.Size = new System.Drawing.Size(116, 20);
             this.chooseProjectionToolStripMenuItem.Text = "Choose Projection";
@@ -95,6 +103,12 @@
             this.orthographicToolStripMenuItem.Name = "orthographicToolStripMenuItem";
             this.orthographicToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.orthographicToolStripMenuItem.Text = "Orthographic";
+            // 
+            // equirectangularToolStripMenuItem
+            // 
+            this.equirectangularToolStripMenuItem.Name = "equirectangularToolStripMenuItem";
+            this.equirectangularToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.equirectangularToolStripMenuItem.Text = "Equirectangular";
             // 
             // northLabel
             // 
@@ -454,6 +468,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem chooseProjectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orthographicToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem equirectangularToolStripMenuItem;
         private NumericTextBox northTextBox;
         private System.Windows.Forms.Label northLabel;
         private System.Windows.Forms.Label eastLabel;
