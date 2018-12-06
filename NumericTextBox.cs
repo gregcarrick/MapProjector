@@ -20,7 +20,7 @@ namespace Projectr
             set
             {
                 this.maxValue = value;
-                this.MaxLength = this.maxValue.ToString().Length;
+                CalculateMaxLength();
             }
         }
 
@@ -33,7 +33,13 @@ namespace Projectr
             set
             {
                 this.minValue = value;
+                CalculateMaxLength();
             }
+        }
+
+        private void CalculateMaxLength()
+        {
+            this.MaxLength = Math.Max(this.minValue.ToString().Length, this.maxValue.ToString().Length);
         }
 
         /// <summary>
@@ -66,13 +72,26 @@ namespace Projectr
 
             string keyInput = e.KeyChar.ToString();
 
-            if ((!string.IsNullOrEmpty(this.Text) || this.Text.Length <= this.MaxLength) && Char.IsDigit(e.KeyChar))
+            string absText = !string.IsNullOrEmpty(this.Text) ? this.Text.TrimStart('-') : this.Text;
+            if ((!string.IsNullOrEmpty(this.Text) || this.Text.TrimStart('-').Length <= this.MaxLength) && Char.IsDigit(e.KeyChar))
             {
-                // Digits are OK up to 3 digits.
+                // Digits are OK up to 3 digits. Now validate against max/min allowed values.
+                double newValue;
+                if (Double.TryParse(string.Concat((this.Text ?? ""), e.KeyChar), out newValue))
+                {
+                    if (newValue < this.minValue || newValue > this.maxValue)
+                    {
+                        e.Handled = true;
+                    }
+                }
             }
             else if (Char.IsControl(e.KeyChar))
             {
                 // Controls chars are OK.
+            }
+            else if (e.KeyChar.Equals('-'))
+            {
+                // Allow negatives.
             }
             else
             {
