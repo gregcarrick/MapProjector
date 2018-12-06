@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Projections\Equirectangular.cs" />
     <Compile Include="ProjectrDataSource.cs">
       <SubType>Component</SubType>
     </Compile>

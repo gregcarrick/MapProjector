@@ -11,12 +11,7 @@ namespace Projectr.Projections
     /// </remarks>
     class Orthographic : IProjection
     {
-        /// <summary>
-        /// Takes geographical longitude/latitude coordinates and projects them
-        /// orthographically.
-        /// </summary>
-        /// <param name="geo"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public Point ConvertToCart(Point geo)
         {
             // Wikipedia uses lambda and phi for longitude and latitude.
@@ -31,9 +26,18 @@ namespace Projectr.Projections
                 );
         }
 
-        /// <summary>
-        /// The point at which the sphere and tangent plane intersect.
-        /// </summary>
+        /// <inheritdoc/>
         public Point Origin { get; set; }
+
+        /// <summary>
+        /// The orthographic projection does not use standard parallels.
+        /// </summary>
+        public int StandardParallel
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

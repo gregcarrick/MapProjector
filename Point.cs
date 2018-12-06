@@ -13,6 +13,9 @@ namespace Projectr
             this.y = y;
         }
 
+        /// <summary>
+        /// The x-coordinate. This is the longitude in geographical coordinates.
+        /// </summary>
         public double X
         {
             get
@@ -21,6 +24,9 @@ namespace Projectr
             }
         }
 
+        /// <summary>
+        /// The y-coordinate. This is tha latitude in geographical coordinates.
+        /// </summary>
         public double Y
         {
             get

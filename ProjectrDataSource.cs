@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Projectr.Projections;
 using System.Windows.Forms;
 
@@ -34,8 +29,8 @@ namespace Projectr
         private double interval;
         private PaperSize paperSize;
         private Orientation orientation;
-        private double customPaperSizeDim1;
-        private double customPaperSizeDim2;
+        private int customPaperSizeDim1;
+        private int customPaperSizeDim2;
         private Point[,] geoCoords;
         private Point[,] cartCoords;
         private string cartCoordsOutput;
@@ -141,7 +136,7 @@ namespace Projectr
             {
                 if (value != this.CustomPaperSizeDim1)
                 {
-                    this.customPaperSizeDim1 = value;
+                    this.customPaperSizeDim1 = (int)value;
                     OnPropertyChanged();
                 }
             }
@@ -157,7 +152,7 @@ namespace Projectr
             {
                 if (value != this.CustomPaperSizeDim2)
                 {
-                    this.customPaperSizeDim2 = value;
+                    this.customPaperSizeDim2 = (int)value;
                     OnPropertyChanged();
                 }
             }
@@ -224,15 +219,15 @@ namespace Projectr
                 return;
             }
 
-            int cols = (int)Math.Ceiling((this.east - this.west) / this.interval);
-            int rows = (int)Math.Ceiling((this.north - this.south) / this.interval);
+            int cols = (int)Math.Ceiling((this.east - this.west) / this.interval) + 1;
+            int rows = (int)Math.Ceiling((this.north - this.south) / this.interval + 1);
 
             this.Projection.Origin = new Point((this.west + this.east) / 2, (this.north + this.south) / 2);
 
-            double? southernmost = null;
-            double? northernmost = null;
-            double? westernmost = null;
-            double? easternmost = null;
+            double s = 0;
+            double n = 0;
+            double w = 0;
+            double e = 0;
             Point geoCoord;
             Point cartCoord;
 
@@ -247,33 +242,43 @@ namespace Projectr
                     cartCoord = this.Projection.ConvertToCart(geoCoord);
                     this.cartCoords[i, j] = cartCoord;
 
-                    if (!southernmost.HasValue || cartCoord.Y < southernmost.Value)
+                    // Keep track of the extremes in each cardinal direction.
+                    if ((i == 0 && j == 0) || cartCoord.Y < s)
                     {
-                        southernmost = cartCoord.Y;
+                        s = cartCoord.Y;
                     }
-                    if (!northernmost.HasValue || cartCoord.Y > northernmost.Value)
+                    if ((i == 0 && j == 0) || cartCoord.Y > n)
                     {
-                        northernmost = cartCoord.Y;
+                        n = cartCoord.Y;
                     }
-                    if (!westernmost.HasValue || cartCoord.X < westernmost.Value)
+                    if ((i == 0 && j == 0) || cartCoord.X < w)
                     {
-                        westernmost = cartCoord.X;
+                        w = cartCoord.X;
                     }
-                    if (!easternmost.HasValue || cartCoord.X > easternmost.Value)
+                    if ((i == 0 && j == 0) || cartCoord.X > e)
                     {
-                        easternmost = cartCoord.X;
+                        e = cartCoord.X;
                     }
                 }
             }
 
-            // Set paper orientation
-            if ((northernmost.Value - southernmost.Value) > (easternmost.Value - westernmost.Value))
+            // The transformed, but unscaled, west-east and north-south ranges.
+            double we = e - w;
+            double sn = n - s;
+
+            // Set paper orientation and get the scaling factor.
+            this.Orientation = (sn > we) ? Orientation.Portrait : Orientation.Landscape;
+            double scale = GetScaleToPaperSize(we, sn);
+
+            // Scale the grid to fit the paper.
+            for (int i = 0; i < cols; i++)
             {
-                this.Orientation = Orientation.Portrait;
-            }
-            else
-            {
-                this.Orientation = Orientation.Landscape;
+                Point temp;
+                for (int j = 0; j < rows; j++)
+                {
+                    temp = this.cartCoords[i, j];
+                    this.cartCoords[i, j] = ScalePoint(temp, scale);
+                }
             }
         }
 
@@ -289,9 +294,29 @@ namespace Projectr
             return result;
         }
 
+        private double GetScaleToPaperSize(double we, double sn)
+        {
+            int paperLongSide = (this.PaperSize == PaperSize.Custom)
+                ? Math.Max(this.customPaperSizeDim1, this.customPaperSizeDim2)
+                : this.PaperSize.LongSide();
+            int paperShortSide = (this.PaperSize == PaperSize.Custom)
+                ? Math.Min(this.customPaperSizeDim1, this.customPaperSizeDim2)
+                : this.PaperSize.ShortSide();
+
+            // Set paper orientation
+            return (this.Orientation == Orientation.Portrait)
+                ? Math.Min((paperLongSide / sn), (paperShortSide / we))
+                : Math.Min((paperShortSide / sn), (paperLongSide / we));
+        }
+
+        private Point ScalePoint(Point point, double scale)
+        {
+            return new Point(scale * point.X, scale * point.Y);
+        }
+
         private Point[,] Transform(Point[,] input)
         {
-            Point[,] result = new Projectr.Point[input.GetLength(1), input.GetLength(0)];
+            Point[,] result = new Point[input.GetLength(1), input.GetLength(0)];
 
             for(int i = 0; i < input.GetLength(0); i++)
             {
