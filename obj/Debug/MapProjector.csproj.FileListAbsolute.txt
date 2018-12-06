@@ -1,0 +1,9 @@
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\bin\Debug\MapProjector.exe.config
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\bin\Debug\MapProjector.exe
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\bin\Debug\MapProjector.pdb
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.csprojResolveAssemblyReference.cache
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.Properties.Resources.resources
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.csproj.GenerateResource.Cache
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.exe
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.pdb
+d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.MapProjector.resources

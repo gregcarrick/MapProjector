@@ -63,6 +63,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Projections\Orthographic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadioGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="ProjectrWindow.resx">
       <DependentUpon>ProjectrWindow.cs</DependentUpon>
     </EmbeddedResource>

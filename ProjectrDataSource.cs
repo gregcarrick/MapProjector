@@ -16,7 +16,13 @@ namespace Projectr
         A2,
         A3,
         A4,
-        Custom
+        Custom,
+    }
+
+    public enum Orientation
+    {
+        Landscape,
+        Portrait,
     }
 
     public class ProjectrDataSource : Component, INotifyPropertyChanged
@@ -27,15 +33,20 @@ namespace Projectr
         private double west;
         private double interval;
         private PaperSize paperSize;
+        private Orientation orientation;
         private double customPaperSizeDim1;
         private double customPaperSizeDim2;
-        private IProjection projection;
+        private Point[,] geoCoords;
+        private Point[,] cartCoords;
+        private string cartCoordsOutput;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ProjectrDataSource()
         {
+            this.Interval = 1;
             this.PaperSize = PaperSize.A3;
+            this.Orientation = Orientation.Landscape;
         }
 
         #region Properties
@@ -168,19 +179,34 @@ namespace Projectr
             }
         }
 
-        public IProjection Projection
+        public Orientation Orientation
         {
             get
             {
-                return this.projection;
+                return this.orientation;
             }
             set
             {
-                if (value != this.projection)
+                if (value != this.orientation)
                 {
-                    this.projection = value;
+                    this.orientation = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        public IProjection Projection { get; set; }
+
+        public string CartCoordsOutput
+        {
+            get
+            {
+                return this.cartCoordsOutput;
+            }
+            set
+            {
+                this.cartCoordsOutput = value;
+                OnPropertyChanged();
             }
         }
 
@@ -201,6 +227,8 @@ namespace Projectr
             int cols = (int)Math.Ceiling((this.east - this.west) / this.interval);
             int rows = (int)Math.Ceiling((this.north - this.south) / this.interval);
 
+            this.Projection.Origin = new Point((this.west + this.east) / 2, (this.north + this.south) / 2);
+
             double? southernmost = null;
             double? northernmost = null;
             double? westernmost = null;
@@ -208,15 +236,16 @@ namespace Projectr
             Point geoCoord;
             Point cartCoord;
 
-            Point[,] geoCoords = new Point[cols, rows];
-            Point[,] cartCoords = new Point[cols, rows];
-            for (int i = 0; i <= cols; i++)
+            this.geoCoords = new Point[cols, rows];
+            this.cartCoords = new Point[cols, rows];
+            for (int i = 0; i < cols; i++)
             {
-                for (int j = 0; j <= rows; j++)
+                for (int j = 0; j < rows; j++)
                 {
+                    // Start from the bottom left.
                     geoCoord = new Point(this.west + interval * i, this.south + interval * j);
-                    cartCoord = projection.ConvertToCart(geoCoord);
-                    cartCoords[i, j] = cartCoord;
+                    cartCoord = this.Projection.ConvertToCart(geoCoord);
+                    this.cartCoords[i, j] = cartCoord;
 
                     if (!southernmost.HasValue || cartCoord.Y < southernmost.Value)
                     {
@@ -237,9 +266,14 @@ namespace Projectr
                 }
             }
 
+            // Set paper orientation
             if ((northernmost.Value - southernmost.Value) > (easternmost.Value - westernmost.Value))
             {
-
+                this.Orientation = Orientation.Portrait;
+            }
+            else
+            {
+                this.Orientation = Orientation.Landscape;
             }
         }
 
