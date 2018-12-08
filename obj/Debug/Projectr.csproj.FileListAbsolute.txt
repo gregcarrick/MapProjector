@@ -7,3 +7,4 @@ D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Pro
 D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.Properties.Resources.resources
 D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Projectr.csproj.GenerateResource.Cache
 D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Projectr.ProjectrWindow.resources
+D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\bin\Debug\Projectr.exe.config

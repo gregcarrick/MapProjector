@@ -1,13 +1,13 @@
-﻿namespace Projectr
+﻿namespace MapProjector
 {
-    partial class ProjectrWindow
+    partial class MapProjectorWindow
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private ProjectrDataSource dataSource;
+        private MapProjectorDataSource dataSource;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -47,22 +47,22 @@
             this.westLabel = new System.Windows.Forms.Label();
             this.southLabel = new System.Windows.Forms.Label();
             this.boundsGroupBox = new System.Windows.Forms.GroupBox();
-            this.westTextBox = new Projectr.NumericTextBox();
-            this.dataSource = new Projectr.ProjectrDataSource();
-            this.northTextBox = new Projectr.NumericTextBox();
-            this.southTextBox = new Projectr.NumericTextBox();
-            this.eastTextBox = new Projectr.NumericTextBox();
-            this.intervalGroupBox = new Projectr.RadioGroupBox<double>();
+            this.westTextBox = new MapProjector.NumericTextBox();
+            this.dataSource = new MapProjector.MapProjectorDataSource();
+            this.northTextBox = new MapProjector.NumericTextBox();
+            this.southTextBox = new MapProjector.NumericTextBox();
+            this.eastTextBox = new MapProjector.NumericTextBox();
+            this.intervalGroupBox = new MapProjector.RadioGroupBox<double>();
             this.radioButton10 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton0_5 = new System.Windows.Forms.RadioButton();
             this.projectButton = new System.Windows.Forms.Button();
-            this.paperGroupBox = new Projectr.RadioGroupBox<PaperSize>();
+            this.paperGroupBox = new MapProjector.RadioGroupBox<PaperSize>();
             this.xLabel = new System.Windows.Forms.Label();
-            this.customPaperSizeNumericTextBox2 = new Projectr.NumericTextBox();
-            this.customPaperSizeNumericTextBox1 = new Projectr.NumericTextBox();
+            this.customPaperSizeNumericTextBox2 = new MapProjector.NumericTextBox();
+            this.customPaperSizeNumericTextBox1 = new MapProjector.NumericTextBox();
             this.customPaperButton = new System.Windows.Forms.RadioButton();
             this.a2PaperButton = new System.Windows.Forms.RadioButton();
             this.a3PaperButton = new System.Windows.Forms.RadioButton();
@@ -433,7 +433,7 @@
             this.orientationLabel.TabIndex = 12;
             this.orientationLabel.Text = "Paper Orientation:";
             // 
-            // ProjectrWindow
+            // MapProjectorWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -446,8 +446,8 @@
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "ProjectrWindow";
-            this.Text = "Projectr";
+            this.Name = "MapProjectorWindow";
+            this.Text = "MapProjector";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.boundsGroupBox.ResumeLayout(false);

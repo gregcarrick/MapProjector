@@ -6,4 +6,4 @@ d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\Map
 d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.csproj.GenerateResource.Cache
 d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.exe
 d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.pdb
-d:\documents\visual studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.MapProjector.resources
+D:\documents\Visual Studio 2015\Projects\MapProjector\MapProjector\obj\Debug\MapProjector.MapProjectorWindow.resources

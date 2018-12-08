@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Projectr.Projections;
+using MapProjector.Projections;
 using System.Windows.Forms;
 
-namespace Projectr
+namespace MapProjector
 {
     public enum PaperSize
     {
@@ -20,7 +20,7 @@ namespace Projectr
         Portrait,
     }
 
-    public class ProjectrDataSource : Component, INotifyPropertyChanged
+    public class MapProjectorDataSource : Component, INotifyPropertyChanged
     {
         private double north;
         private double south;
@@ -37,7 +37,7 @@ namespace Projectr
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ProjectrDataSource()
+        public MapProjectorDataSource()
         {
             this.Interval = 1;
             this.PaperSize = PaperSize.A3;

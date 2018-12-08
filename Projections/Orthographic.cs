@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Projectr.Projections
+namespace MapProjector.Projections
 {
     /// <summary>
     /// The sphere is projected onto a tangent plane, such that the point of

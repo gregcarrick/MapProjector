@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Projectr.Projections;
+using MapProjector.Projections;
 
-namespace Projectr
+namespace MapProjector
 {
-    public partial class ProjectrWindow : Form
+    public partial class MapProjectorWindow : Form
     {
-        public ProjectrWindow()
+        public MapProjectorWindow()
         {
             InitializeComponent();
 
