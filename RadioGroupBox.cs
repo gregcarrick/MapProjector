@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Projectr
+namespace MapProjector
 {
     public class RadioGroupBox<T> : GroupBox where T : struct
     {

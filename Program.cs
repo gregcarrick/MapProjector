@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Projectr
+namespace MapProjector
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Projectr
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ProjectrWindow());
+            Application.Run(new MapProjectorWindow());
         }
     }
 }

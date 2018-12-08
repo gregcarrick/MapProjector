@@ -1,4 +1,4 @@
-﻿namespace Projectr.Projections
+﻿namespace MapProjector.Projections
 {
     public interface IProjection
     {

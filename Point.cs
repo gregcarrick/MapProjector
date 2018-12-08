@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Projectr
+namespace MapProjector
 {
     public struct Point
     {
