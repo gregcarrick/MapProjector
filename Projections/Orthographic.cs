@@ -14,11 +14,12 @@ namespace MapProjector.Projections
         /// <inheritdoc/>
         public Point ConvertToCart(Point geo)
         {
-            // Wikipedia uses lambda and phi for longitude and latitude.
-            double lambda = geo.X;
-            double phi = geo.Y;
-            double lambda_0 = this.Origin.X;
-            double phi_0 = this.Origin.Y;
+            // Wikipedia uses lambda and phi to represent longitude and latitude.
+            // Don't forget to convert to radians! T.T
+            double lambda = Helpers.DegToRad(geo.X);
+            double phi = Helpers.DegToRad(geo.Y);
+            double lambda_0 = Helpers.DegToRad(this.Origin.X);
+            double phi_0 = Helpers.DegToRad(this.Origin.Y);
 
             return new Point(
                 Math.Cos(phi) * Math.Sin(lambda - lambda_0),

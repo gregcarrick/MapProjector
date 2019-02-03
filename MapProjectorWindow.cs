@@ -13,26 +13,34 @@ namespace MapProjector
             this.intervalGroupBox.DataBindings.Add(new Binding("Selected", this.dataSource, "Interval", true, DataSourceUpdateMode.OnPropertyChanged));
             this.paperGroupBox.DataBindings.Add(new Binding("Selected", this.dataSource, "PaperSize", true, DataSourceUpdateMode.OnPropertyChanged));
 
-            this.orthographicToolStripMenuItem.Click += orthographicToolStripMenuItem_Click;
-            this.equirectangularToolStripMenuItem.Click += equirectangularToolStripMenuItem_Click;
+            this.orthographicToolStripMenuItem.Click += projectionToolStripMenuItem_Click;
+            this.equirectangularToolStripMenuItem.Click += projectionToolStripMenuItem_Click;
             this.projectButton.Click += projectButton_Click;
 
             SetProjection(new Equirectangular());
             this.equirectangularToolStripMenuItem.Checked = true;
         }
 
-        private void orthographicToolStripMenuItem_Click(object sender, EventArgs e)
+        private void projectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.equirectangularToolStripMenuItem.Checked = false;
-            this.orthographicToolStripMenuItem.Checked = true;
-            SetProjection(new Orthographic());
-        }
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
 
-        private void equirectangularToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.equirectangularToolStripMenuItem.Checked = true;
-            this.orthographicToolStripMenuItem.Checked = false;
-            SetProjection(new Equirectangular());
+            foreach(ToolStripMenuItem ddi in this.chooseProjectionToolStripMenuItem.DropDownItems)
+            {
+                if (ddi.Equals(item))
+                {
+                    ddi.Checked = true;
+                }
+                else
+                {
+                    ddi.Checked = false;
+                }
+            }
+
+            if (item != null && item.Tag is IProjection projection)
+            {
+                SetProjection(projection);
+            }
         }
 
         private void projectButton_Click(object sender, EventArgs e)

@@ -311,7 +311,23 @@ namespace MapProjector
 
         private Point ScalePoint(Point point, double scale)
         {
-            return new Point(scale * point.X, scale * point.Y);
+            int paperWidth = 0, paperHeight = 0;
+            switch (this.Orientation)
+            {
+                case Orientation.Landscape:
+                    paperWidth = this.PaperSize.LongSide();
+                    paperHeight = this.PaperSize.ShortSide();
+                    break;
+                case Orientation.Portrait:
+                    paperWidth = this.PaperSize.ShortSide();
+                    paperWidth = this.PaperSize.LongSide();
+                    break;
+            }
+
+            return new Point(
+                scale * point.X + paperWidth / 2,
+                scale * point.Y + paperHeight / 2
+                );
         }
 
         private Point[,] Transform(Point[,] input)

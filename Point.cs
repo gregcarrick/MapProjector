@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace MapProjector
 {
@@ -40,6 +41,11 @@ namespace MapProjector
             double xDist = other.X - this.X;
             double yDist = other.Y - this.Y;
             return Math.Sqrt((xDist * xDist) + (yDist * yDist));
+        }
+
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture, "({0}, {1})", this.x, this.y);
         }
     }
 }
