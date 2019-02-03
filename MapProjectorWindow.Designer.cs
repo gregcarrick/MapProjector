@@ -19,11 +19,11 @@
             {
                 if (this.orthographicToolStripMenuItem != null)
                 {
-                    this.orthographicToolStripMenuItem.Click -= orthographicToolStripMenuItem_Click;
+                    this.orthographicToolStripMenuItem.Click -= projectionToolStripMenuItem_Click;
                 }
                 if (this.equirectangularToolStripMenuItem != null)
                 {
-                    this.equirectangularToolStripMenuItem.Click -= equirectangularToolStripMenuItem_Click;
+                    this.equirectangularToolStripMenuItem.Click -= projectionToolStripMenuItem_Click;
                 }
                 components.Dispose();
             }
@@ -102,12 +102,14 @@
             // 
             this.orthographicToolStripMenuItem.Name = "orthographicToolStripMenuItem";
             this.orthographicToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.orthographicToolStripMenuItem.Tag = new Projections.Orthographic();
             this.orthographicToolStripMenuItem.Text = "Orthographic";
             // 
             // equirectangularToolStripMenuItem
             // 
             this.equirectangularToolStripMenuItem.Name = "equirectangularToolStripMenuItem";
             this.equirectangularToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.equirectangularToolStripMenuItem.Tag = new Projections.Equirectangular();
             this.equirectangularToolStripMenuItem.Text = "Equirectangular";
             // 
             // northLabel

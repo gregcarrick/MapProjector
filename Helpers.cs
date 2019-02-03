@@ -1,14 +1,16 @@
-﻿namespace MapProjector
+﻿using System;
+
+namespace MapProjector
 {
     /// <summary>
     /// Static class containing helper functions and extension methods.
     /// </summary>
-    public static class Helpers
+    internal static class Helpers
     {
         /// <summary>
         /// Get the length of the long size of the paper, in mm.
         /// </summary>
-        public static int LongSide(this PaperSize paperSize)
+        internal static int LongSide(this PaperSize paperSize)
         {
             switch (paperSize)
             {
@@ -28,7 +30,7 @@
         /// <summary>
         /// Get the length of the short side of the paper, in mm.
         /// </summary>
-        public static int ShortSide(this PaperSize paperSize)
+        internal static int ShortSide(this PaperSize paperSize)
         {
             switch (paperSize)
             {
@@ -43,6 +45,16 @@
                     // Paper size is set explicitly elsewhere.
                     return 0;
             }
+        }
+
+        internal static double DegToRad(double deg)
+        {
+            return (deg * Math.PI) / 180.0;
+        }
+
+        internal static double RadToDeg(double rad)
+        {
+            return (rad * 180.0) / Math.PI;
         }
     }
 }
