@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using MapProjector.Projections;
 using System.Windows.Forms;
+using System.Text;
 
 namespace MapProjector
 {
@@ -33,6 +34,8 @@ namespace MapProjector
         private int customPaperSizeDim2;
         private Point[,] geoCoords;
         private Point[,] cartCoords;
+        private int cols;
+        private int rows;
         private string cartCoordsOutput;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -219,8 +222,8 @@ namespace MapProjector
                 return;
             }
 
-            int cols = (int)Math.Ceiling((this.east - this.west) / this.interval) + 1;
-            int rows = (int)Math.Ceiling((this.north - this.south) / this.interval + 1);
+            this.cols = (int)Math.Ceiling((this.east - this.west) / this.interval) + 1;
+            this.rows = (int)Math.Ceiling((this.north - this.south) / this.interval + 1);
 
             this.Projection.Origin = new Point((this.west + this.east) / 2, (this.north + this.south) / 2);
 
@@ -231,11 +234,11 @@ namespace MapProjector
             Point geoCoord;
             Point cartCoord;
 
-            this.geoCoords = new Point[cols, rows];
-            this.cartCoords = new Point[cols, rows];
-            for (int i = 0; i < cols; i++)
+            this.geoCoords = new Point[this.cols, this.rows];
+            this.cartCoords = new Point[this.cols, this.rows];
+            for (int i = 0; i < this.cols; i++)
             {
-                for (int j = 0; j < rows; j++)
+                for (int j = 0; j < this.rows; j++)
                 {
                     // Start from the bottom left.
                     geoCoord = new Point(this.west + interval * i, this.south + interval * j);
@@ -271,15 +274,17 @@ namespace MapProjector
             double scale = GetScaleToPaperSize(we, sn);
 
             // Scale the grid to fit the paper.
-            for (int i = 0; i < cols; i++)
+            for (int i = 0; i < this.cols; i++)
             {
                 Point temp;
-                for (int j = 0; j < rows; j++)
+                for (int j = 0; j < this.rows; j++)
                 {
                     temp = this.cartCoords[i, j];
                     this.cartCoords[i, j] = ScalePoint(temp, scale);
                 }
             }
+
+            DumpOutput();
         }
 
         private bool CanCalculate()
@@ -345,9 +350,31 @@ namespace MapProjector
             return result;
         }
 
-        private void Transform()
+        private void DumpOutput()
         {
+            StringBuilder output = new StringBuilder();
 
+            if (this.cartCoords != null)
+            {
+                for (int j = 0; j < this.rows; j++)
+                {
+                    output.AppendLine(GetOutputLine(j));
+                }
+            }
+
+            this.CartCoordsOutput = output.ToString();
+        }
+
+        private string GetOutputLine(int row)
+        {
+            string[] outputLine = new string[this.cols];
+
+            for(int i = 0; i < this.cols; i++)
+            {
+                outputLine[i] = this.cartCoords[i, row].ToString();
+            }
+
+            return string.Join(", ", outputLine);
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")

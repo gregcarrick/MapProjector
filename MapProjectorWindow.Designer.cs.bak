@@ -54,14 +54,12 @@
             this.northTextBox = new MapProjector.NumericTextBox();
             this.southTextBox = new MapProjector.NumericTextBox();
             this.eastTextBox = new MapProjector.NumericTextBox();
-            this.intervalGroupBox = new MapProjector.RadioGroupBox<double>();
             this.radioButton10 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton0_5 = new System.Windows.Forms.RadioButton();
             this.projectButton = new System.Windows.Forms.Button();
-            this.paperGroupBox = new MapProjector.RadioGroupBox<PaperSize>();
             this.xLabel = new System.Windows.Forms.Label();
             this.customPaperSizeNumericTextBox2 = new MapProjector.NumericTextBox();
             this.customPaperSizeNumericTextBox1 = new MapProjector.NumericTextBox();
@@ -75,8 +73,6 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.boundsGroupBox.SuspendLayout();
-            this.intervalGroupBox.SuspendLayout();
-            this.paperGroupBox.SuspendLayout();
             this.resultsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -237,20 +233,6 @@
             this.eastTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.eastTextBox.Value = 0D;
             // 
-            // intervalGroupBox
-            // 
-            this.intervalGroupBox.Controls.Add(this.radioButton10);
-            this.intervalGroupBox.Controls.Add(this.radioButton5);
-            this.intervalGroupBox.Controls.Add(this.radioButton2);
-            this.intervalGroupBox.Controls.Add(this.radioButton1);
-            this.intervalGroupBox.Controls.Add(this.radioButton0_5);
-            this.intervalGroupBox.Location = new System.Drawing.Point(0, 156);
-            this.intervalGroupBox.Name = "intervalGroupBox";
-            this.intervalGroupBox.Size = new System.Drawing.Size(157, 134);
-            this.intervalGroupBox.TabIndex = 10;
-            this.intervalGroupBox.TabStop = false;
-            this.intervalGroupBox.Text = "Interval";
-            // 
             // radioButton10
             // 
             this.radioButton10.AutoSize = true;
@@ -316,22 +298,6 @@
             this.projectButton.TabIndex = 12;
             this.projectButton.Text = "Project";
             this.projectButton.UseVisualStyleBackColor = true;
-            // 
-            // paperGroupBox
-            // 
-            this.paperGroupBox.Controls.Add(this.xLabel);
-            this.paperGroupBox.Controls.Add(this.customPaperSizeNumericTextBox2);
-            this.paperGroupBox.Controls.Add(this.customPaperSizeNumericTextBox1);
-            this.paperGroupBox.Controls.Add(this.customPaperButton);
-            this.paperGroupBox.Controls.Add(this.a2PaperButton);
-            this.paperGroupBox.Controls.Add(this.a3PaperButton);
-            this.paperGroupBox.Controls.Add(this.a4PaperButton);
-            this.paperGroupBox.Location = new System.Drawing.Point(0, 296);
-            this.paperGroupBox.Name = "paperGroupBox";
-            this.paperGroupBox.Size = new System.Drawing.Size(157, 115);
-            this.paperGroupBox.TabIndex = 11;
-            this.paperGroupBox.TabStop = false;
-            this.paperGroupBox.Text = "Paper Size (mm)";
             // 
             // xLabel
             // 
@@ -454,15 +420,12 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.dataSource, "CartCoordsOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.richTextBox1.Enabled = false;
-            this.richTextBox1.ForeColor = System.Drawing.Color.Black;
             this.richTextBox1.Location = new System.Drawing.Point(9, 47);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(517, 368);
             this.richTextBox1.TabIndex = 13;
             this.richTextBox1.Text = "";
-            this.richTextBox1.WordWrap = false;
             // 
             // MapProjectorWindow
             // 
@@ -470,9 +433,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(701, 445);
             this.Controls.Add(this.resultsGroupBox);
-            this.Controls.Add(this.paperGroupBox);
             this.Controls.Add(this.projectButton);
-            this.Controls.Add(this.intervalGroupBox);
             this.Controls.Add(this.boundsGroupBox);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -483,10 +444,6 @@
             this.menuStrip1.PerformLayout();
             this.boundsGroupBox.ResumeLayout(false);
             this.boundsGroupBox.PerformLayout();
-            this.intervalGroupBox.ResumeLayout(false);
-            this.intervalGroupBox.PerformLayout();
-            this.paperGroupBox.ResumeLayout(false);
-            this.paperGroupBox.PerformLayout();
             this.resultsGroupBox.ResumeLayout(false);
             this.resultsGroupBox.PerformLayout();
             this.ResumeLayout(false);
