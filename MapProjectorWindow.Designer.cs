@@ -455,7 +455,6 @@
             // richTextBox1
             // 
             this.richTextBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.dataSource, "CartCoordsOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.richTextBox1.Enabled = false;
             this.richTextBox1.ForeColor = System.Drawing.Color.Black;
             this.richTextBox1.Location = new System.Drawing.Point(9, 47);
             this.richTextBox1.Name = "richTextBox1";
