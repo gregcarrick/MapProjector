@@ -240,8 +240,8 @@ namespace MapProjector
             {
                 for (int j = 0; j < this.rows; j++)
                 {
-                    // Start from the bottom left.
-                    geoCoord = new Point(this.west + interval * i, this.south + interval * j);
+                    // Start from the top left.
+                    geoCoord = new Point(this.west + interval * i, this.north - interval * j);
                     cartCoord = this.Projection.ConvertToCart(geoCoord);
                     this.cartCoords[i, j] = cartCoord;
 
@@ -265,7 +265,7 @@ namespace MapProjector
                 }
             }
 
-            // The transformed, but unscaled, west-east and north-south ranges.
+            // The converted, but unscaled, west-east and north-south ranges.
             double we = e - w;
             double sn = n - s;
 
@@ -325,13 +325,13 @@ namespace MapProjector
                     break;
                 case Orientation.Portrait:
                     paperWidth = this.PaperSize.ShortSide();
-                    paperWidth = this.PaperSize.LongSide();
+                    paperHeight = this.PaperSize.LongSide();
                     break;
             }
 
             return new Point(
-                scale * point.X + paperWidth / 2,
-                scale * point.Y + paperHeight / 2
+                scale * point.X + paperWidth / 2, // left to right
+                paperHeight / 2 - scale * point.Y // top to bottom
                 );
         }
 
