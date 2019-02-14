@@ -3,16 +3,25 @@
     public interface IProjection
     {
         /// <summary>
+        /// The point at which the sphere and tangent plane intersect.
+        /// </summary>
+        Point Origin { get; set; }
+
+        /// <summary>
+        /// The variable standard parallel used by some projections, such as
+        /// equirectangular.
+        /// </summary>
+        int StandardParallel { get; }
+
+        /// <summary>
         /// Takes geographical longitude/latitude coordinates and projects them
         /// orthographically.
         /// </summary>
         Point ConvertToCart(Point geo);
 
         /// <summary>
-        /// The point at which the sphere and tangent plane intersect.
+        /// Takes a point from the map and projects it back onto the sphere.
         /// </summary>
-        Point Origin { get; set; }
-
-        int StandardParallel { get; }
+        Point ConvertToGeo(Point cart);
     }
 }

@@ -14,11 +14,11 @@ namespace MapProjector
             this.paperGroupBox.DataBindings.Add(new Binding("Selected", this.dataSource, "PaperSize", true, DataSourceUpdateMode.OnPropertyChanged));
 
             this.orthographicToolStripMenuItem.Click += projectionToolStripMenuItem_Click;
-            this.equirectangularToolStripMenuItem.Click += projectionToolStripMenuItem_Click;
+            this.plateCarreeToolStripMenuItem.Click += projectionToolStripMenuItem_Click;
             this.projectButton.Click += projectButton_Click;
 
             SetProjection(new Equirectangular());
-            this.equirectangularToolStripMenuItem.Checked = true;
+            this.plateCarreeToolStripMenuItem.Checked = true;
         }
 
         private void projectionToolStripMenuItem_Click(object sender, EventArgs e)

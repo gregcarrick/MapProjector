@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers.cs" />
+    <Compile Include="Projections\PlateCarree.cs" />
     <Compile Include="Projections\Equirectangular.cs" />
     <Compile Include="MapProjectorDataSource.cs">
       <SubType>Component</SubType>
