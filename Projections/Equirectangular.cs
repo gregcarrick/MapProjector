@@ -16,25 +16,10 @@ namespace MapProjector.Projections
         private int phi_1 = 0;
 
         /// <inheritdoc/>
-        public Point ConvertToCart(Point geo)
-        {
-            // Wikipedia uses lambda and phi for longitude and latitude.
-            double lambda = geo.X;
-            double phi = geo.Y;
-            double lambda_0 = this.Origin.X;
-            double phi_0 = this.Origin.Y;
-
-            return new Point(
-                Math.Cos(this.phi_1) * (lambda - lambda_0),
-                phi - phi_0
-                );
-        }
-
-        /// <inheritdoc/>
         public Point Origin { get; set; }
 
         /// <summary>
-        /// The standard parallel of the equirectangular projection.
+        /// The standard parallel of the equirectangular projection, in degrees.
         /// 0 by default.
         /// </summary>
         public int StandardParallel
@@ -47,6 +32,35 @@ namespace MapProjector.Projections
             {
                 this.phi_1 = value;
             }
+        }
+
+        /// <inheritdoc/>
+        public Point ConvertToCart(Point geo)
+        {
+            // Wikipedia uses lambda and phi for longitude and latitude.
+            double lambda = Helpers.DegToRad(geo.Lambda);
+            double phi = Helpers.DegToRad(geo.Phi);
+            double lambda_0 = Helpers.DegToRad(this.Origin.Lambda);
+            double phi_0 = Helpers.DegToRad(this.Origin.Phi);
+
+            return new Point(
+                Math.Cos(Helpers.DegToRad(this.phi_1)) * (lambda - lambda_0),
+                phi - phi_0
+                );
+        }
+
+        /// <inheritdoc/>
+        public Point ConvertToGeo(Point cart)
+        {
+            double x = cart.X;
+            double y = cart.Y;
+            double lambda_0 = this.Origin.Lambda;
+            double phi_0 = this.Origin.Phi;
+
+            return new Point(
+                (x / Math.Cos(phi_1)) + lambda_0,
+                y + phi_0
+                );
         }
     }
 }

@@ -21,9 +21,9 @@
                 {
                     this.orthographicToolStripMenuItem.Click -= projectionToolStripMenuItem_Click;
                 }
-                if (this.equirectangularToolStripMenuItem != null)
+                if (this.plateCarreeToolStripMenuItem != null)
                 {
-                    this.equirectangularToolStripMenuItem.Click -= projectionToolStripMenuItem_Click;
+                    this.plateCarreeToolStripMenuItem.Click -= projectionToolStripMenuItem_Click;
                 }
                 components.Dispose();
             }
@@ -38,12 +38,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            MapProjector.Projections.Orthographic orthographic1 = new MapProjector.Projections.Orthographic();
-            MapProjector.Projections.Equirectangular equirectangular1 = new MapProjector.Projections.Equirectangular();
+            MapProjector.Projections.Orthographic orthographic = new MapProjector.Projections.Orthographic();
+            MapProjector.Projections.PlateCarree plateCarree = new MapProjector.Projections.PlateCarree();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.chooseProjectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orthographicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.equirectangularToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.plateCarreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.northLabel = new System.Windows.Forms.Label();
             this.eastLabel = new System.Windows.Forms.Label();
             this.westLabel = new System.Windows.Forms.Label();
@@ -94,7 +94,7 @@
             // 
             this.chooseProjectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.orthographicToolStripMenuItem,
-            this.equirectangularToolStripMenuItem});
+            this.plateCarreeToolStripMenuItem});
             this.chooseProjectionToolStripMenuItem.Name = "chooseProjectionToolStripMenuItem";
             this.chooseProjectionToolStripMenuItem.Size = new System.Drawing.Size(116, 20);
             this.chooseProjectionToolStripMenuItem.Text = "Choose Projection";
@@ -103,16 +103,15 @@
             // 
             this.orthographicToolStripMenuItem.Name = "orthographicToolStripMenuItem";
             this.orthographicToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.orthographicToolStripMenuItem.Tag = orthographic1;
+            this.orthographicToolStripMenuItem.Tag = orthographic;
             this.orthographicToolStripMenuItem.Text = "Orthographic";
             // 
-            // equirectangularToolStripMenuItem
+            // plateCarreeToolStripMenuItem
             // 
-            this.equirectangularToolStripMenuItem.Name = "equirectangularToolStripMenuItem";
-            this.equirectangularToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            equirectangular1.StandardParallel = 0;
-            this.equirectangularToolStripMenuItem.Tag = equirectangular1;
-            this.equirectangularToolStripMenuItem.Text = "Equirectangular";
+            this.plateCarreeToolStripMenuItem.Name = "plateCarreeToolStripMenuItem";
+            this.plateCarreeToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.plateCarreeToolStripMenuItem.Tag = plateCarree;
+            this.plateCarreeToolStripMenuItem.Text = "Plate Carrée";
             // 
             // northLabel
             // 
@@ -498,7 +497,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem chooseProjectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orthographicToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem equirectangularToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem plateCarreeToolStripMenuItem;
         private NumericTextBox northTextBox;
         private System.Windows.Forms.Label northLabel;
         private System.Windows.Forms.Label eastLabel;

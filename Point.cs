@@ -3,10 +3,18 @@ using System.Globalization;
 
 namespace MapProjector
 {
+    /// <summary>
+    /// A point on a plane, expressed as a coordinate pair.
+    /// </summary>
+    /// <remarks>
+    /// For syntactic convenience, the longtiude and latitude may be returned as either
+    /// (<see cref="Point.X"/>, <see cref="Point.Y"/>) or
+    /// (<see cref="Point.Lambda"/>, <see cref="Point.Phi"/>).
+    /// </remarks>
     public struct Point
     {
-        private double x;
-        private double y;
+        private readonly double x;
+        private readonly double y;
 
         public Point(double x, double y)
         {
@@ -26,7 +34,7 @@ namespace MapProjector
         }
 
         /// <summary>
-        /// The y-coordinate. This is tha latitude in geographical coordinates.
+        /// The y-coordinate. This is the latitude in geographical coordinates.
         /// </summary>
         public double Y
         {
@@ -36,10 +44,35 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// The lambda coordinate. This is the longitude in cartographic coordinates.
+        /// </summary>
+        public double Lambda
+        {
+            get
+            {
+                return this.x;
+            }
+        }
+
+        /// <summary>
+        /// The phi coordinate. This is the latitude in cartographic coordinates.
+        /// </summary>
+        public double Phi
+        {
+            get
+            {
+                return this.y;
+            }
+        }
+
+        /// <summary>
+        /// Get the Euclidean distance betwwen this point and another.
+        /// </summary>
         public double DistanceFrom(Point other)
         {
-            double xDist = other.X - this.X;
-            double yDist = other.Y - this.Y;
+            double xDist = other.x - this.x;
+            double yDist = other.y - this.y;
             return Math.Sqrt((xDist * xDist) + (yDist * yDist));
         }
 
