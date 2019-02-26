@@ -1,26 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using MapProjector.Projections;
-using System.Windows.Forms;
 using System.Text;
+using System.Windows.Forms;
+using MapProjector.Projections;
 
 namespace MapProjector
 {
+    /// <summary>
+    /// Allows the user to choose from pre-set paper sizes or set custom side lengths.
+    /// </summary>
     public enum PaperSize
     {
+        /// <summary>
+        /// Standard size A2.
+        /// </summary>
         A2,
+
+        /// <summary>
+        /// Standard size A3.
+        /// </summary>
         A3,
+
+        /// <summary>
+        /// Standard size A4.
+        /// </summary>
         A4,
+
+        /// <summary>
+        /// Custom width and length.
+        /// </summary>
         Custom,
     }
 
+    /// <summary>
+    /// Paper orientation: Landscape or Portrait.
+    /// </summary>
     public enum Orientation
     {
+        /// <summary>
+        /// Landscape.
+        /// </summary>
         Landscape,
+
+        /// <summary>
+        /// Portrait.
+        /// </summary>
         Portrait,
     }
 
+    /// <summary>
+    /// The data source bound to the <see cref="MapProjectorWindow"/>.
+    /// </summary>
     public class MapProjectorDataSource : Component, INotifyPropertyChanged
     {
         private double north;
@@ -33,13 +66,17 @@ namespace MapProjector
         private int customPaperSizeDim1;
         private int customPaperSizeDim2;
         private Point[,] geoCoords;
-        private Point[,] cartCoords;
+        Dictionary<double, List<Point>> cartCoords;
         private int cols;
         private int rows;
         private string cartCoordsOutput;
 
+        /// <inheritdoc/>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Constructs a new instance of <see cref="MapProjectorDataSource"/>.
+        /// </summary>
         public MapProjectorDataSource()
         {
             this.Interval = 1;
@@ -49,6 +86,9 @@ namespace MapProjector
 
         #region Properties
 
+        /// <summary>
+        /// Northernmost geographical coordinate.
+        /// </summary>
         public double North
         {
             get
@@ -65,6 +105,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// Southernmost geographical coordinate.
+        /// </summary>
         public double South
         {
             get
@@ -81,6 +124,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// Easternmost geographical coordinate.
+        /// </summary>
         public double East
         {
             get
@@ -97,6 +143,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// Westernmost geographical coordinate.
+        /// </summary>
         public double West
         {
             get
@@ -113,6 +162,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// Interval of the coordinate gridlines.
+        /// </summary>
         public double Interval
         {
             get
@@ -129,6 +181,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// One parameter for the custom paper size, the other being <see cref="CustomPaperSizeDim2"/>.
+        /// </summary>
         public double CustomPaperSizeDim1
         {
             get
@@ -145,6 +200,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// One parameter for the custom paper size, the other being <see cref="CustomPaperSizeDim1"/>.
+        /// </summary>
         public double CustomPaperSizeDim2
         {
             get
@@ -161,6 +219,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// The chosen paper size.
+        /// </summary>
         public PaperSize PaperSize
         {
             get
@@ -177,6 +238,9 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// The orientation of the paper.
+        /// </summary>
         public Orientation Orientation
         {
             get
@@ -193,8 +257,14 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// The projection in use.
+        /// </summary>
         public IProjection Projection { get; set; }
 
+        /// <summary>
+        /// Text output displaying the projected coordinates.
+        /// </summary>
         public string CartCoordsOutput
         {
             get
@@ -208,8 +278,17 @@ namespace MapProjector
             }
         }
 
+        /// <summary>
+        /// The meridian through centre of the map. Assumes that the projection
+        /// results in west-east symmetry.
+        /// </summary>
+        public double Meridian { get; set; }
+
         #endregion
 
+        /// <summary>
+        /// Called when the Calculate button is clicked to project the coordinates.
+        /// </summary>
         public void Calculate()
         {
             if (!CanCalculate())
@@ -225,7 +304,8 @@ namespace MapProjector
             this.cols = (int)Math.Ceiling((this.east - this.west) / this.interval) + 1;
             this.rows = (int)Math.Ceiling((this.north - this.south) / this.interval + 1);
 
-            this.Projection.Origin = new Point((this.west + this.east) / 2, (this.north + this.south) / 2);
+            this.Meridian = (this.west + this.east) / 2;
+            this.Projection.Origin = new Point(this.Meridian, (this.north + this.south) / 2);
 
             double s = 0;
             double n = 0;
@@ -235,15 +315,22 @@ namespace MapProjector
             Point cartCoord;
 
             this.geoCoords = new Point[this.cols, this.rows];
-            this.cartCoords = new Point[this.cols, this.rows];
-            for (int i = 0; i < this.cols; i++)
+            this.cartCoords = new Dictionary<double, List<Point>>();
+            double rowLat;
+
+            for (int j = 0; j < this.rows; j++)
             {
-                for (int j = 0; j < this.rows; j++)
+                // Start at the top.
+                List<Point> row = new List<Point>();
+                rowLat = this.north - interval * j;
+                this.cartCoords.Add(rowLat, row);
+
+                for (int i = 0; i < this.cols; i++)
                 {
-                    // Start from the top left.
+                    // Go from left to right.
                     geoCoord = new Point(this.west + interval * i, this.north - interval * j);
                     cartCoord = this.Projection.ConvertToCart(geoCoord);
-                    this.cartCoords[i, j] = cartCoord;
+                    row.Add(cartCoord);
 
                     // Keep track of the extremes in each cardinal direction.
                     if ((i == 0 && j == 0) || cartCoord.Y < s)
@@ -274,13 +361,12 @@ namespace MapProjector
             double scale = GetScaleToPaperSize(we, sn);
 
             // Scale the grid to fit the paper.
-            for (int i = 0; i < this.cols; i++)
+            foreach (List<Point> row in this.cartCoords.Values)
             {
-                Point temp;
-                for (int j = 0; j < this.rows; j++)
+                for (int i = 0; i < row.Count; i++)
                 {
-                    temp = this.cartCoords[i, j];
-                    this.cartCoords[i, j] = ScalePoint(temp, scale);
+                    Point point = row[i];
+                    row[i] = ScalePoint(point, scale);
                 }
             }
 
@@ -356,22 +442,24 @@ namespace MapProjector
 
             if (this.cartCoords != null)
             {
-                for (int j = 0; j < this.rows; j++)
+                this.cartCoords = this.cartCoords.SortDictionaryByKeyDescending();
+
+                foreach (List<Point> row in this.cartCoords.Values)
                 {
-                    output.AppendLine(GetOutputLine(j));
+                    output.AppendLine(GetOutputLine(row));
                 }
             }
 
             this.CartCoordsOutput = output.ToString();
         }
 
-        private string GetOutputLine(int row)
+        private string GetOutputLine(List<Point> row)
         {
             string[] outputLine = new string[this.cols];
 
-            for(int i = 0; i < this.cols; i++)
+            for(int i = 0; i < row.Count; i++)
             {
-                outputLine[i] = this.cartCoords[i, row].ToString();
+                outputLine[i] = row[i].ToString();
             }
 
             return string.Join(", ", outputLine);
