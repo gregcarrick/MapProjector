@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MapProjector
 {
@@ -55,6 +57,20 @@ namespace MapProjector
         internal static double RadToDeg(double rad)
         {
             return (rad * 180.0) / Math.PI;
+        }
+
+        internal static Dictionary<TKey, TValue> SortDictionaryByKeyAscending<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+        {
+            return dict
+                .OrderBy(kvp => kvp.Key)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        }
+
+        internal static Dictionary<TKey, TValue> SortDictionaryByKeyDescending<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+        {
+            return dict
+                .OrderByDescending(kvp => kvp.Key)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }
