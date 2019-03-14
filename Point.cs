@@ -78,7 +78,17 @@ namespace MapProjector
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "({0:0}, {1:0})", this.x, this.y);
+            string first = String.Format(
+                CultureInfo.InvariantCulture,
+                "{0:0}",
+                this.x
+                ).PadLeft(3);
+            string second = String.Format(
+                CultureInfo.InvariantCulture,
+                "{0:0}",
+                this.y
+                ).PadLeft(3);
+            return "(" + first + "," + second + ")";
         }
     }
 }

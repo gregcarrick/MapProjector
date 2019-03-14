@@ -420,10 +420,13 @@
             // 
             // resultsGroupBox
             // 
+            this.resultsGroupBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+                | System.Windows.Forms.AnchorStyles.Left
+                | System.Windows.Forms.AnchorStyles.Right
+                | System.Windows.Forms.AnchorStyles.Top;
             this.resultsGroupBox.Controls.Add(this.richTextBox1);
             this.resultsGroupBox.Controls.Add(this.orientationText);
             this.resultsGroupBox.Controls.Add(this.orientationLabel);
-            this.resultsGroupBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.resultsGroupBox.Location = new System.Drawing.Point(163, 24);
             this.resultsGroupBox.Name = "resultsGroupBox";
             this.resultsGroupBox.Size = new System.Drawing.Size(538, 421);
@@ -453,7 +456,12 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+                | System.Windows.Forms.AnchorStyles.Left
+                | System.Windows.Forms.AnchorStyles.Right
+                | System.Windows.Forms.AnchorStyles.Top;
             this.richTextBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.dataSource, "CartCoordsOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.ForeColor = System.Drawing.Color.Black;
             this.richTextBox1.Location = new System.Drawing.Point(9, 47);
             this.richTextBox1.Name = "richTextBox1";
@@ -475,6 +483,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(706, 480);
             this.Name = "MapProjectorWindow";
             this.Text = "MapProjector";
             this.menuStrip1.ResumeLayout(false);
