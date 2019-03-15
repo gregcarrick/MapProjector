@@ -56,6 +56,8 @@ namespace MapProjector
     /// </summary>
     public class MapProjectorDataSource : Component, INotifyPropertyChanged
     {
+        private const string placeholder = "         ";
+
         private double north;
         private double south;
         private double east;
@@ -65,10 +67,10 @@ namespace MapProjector
         private Orientation orientation;
         private int customPaperSizeDim1;
         private int customPaperSizeDim2;
-        private Point[,] geoCoords;
-        Dictionary<double, List<Point>> cartCoords;
-        private int cols;
-        private int rows;
+        private List<double> lats;
+        private List<double> longs;
+        private Dictionary<double, Dictionary<double, Point>> cartCoords;
+        private double scale;
         private string cartCoordsOutput;
 
         /// <inheritdoc/>
@@ -278,13 +280,14 @@ namespace MapProjector
             }
         }
 
-        /// <summary>
-        /// The meridian through centre of the map. Assumes that the projection
-        /// results in west-east symmetry.
-        /// </summary>
-        public double Meridian { get; set; }
-
         #endregion
+
+        private void Reset()
+        {
+            this.lats = new List<double>();
+            this.longs = new List<double>();
+            this.cartCoords = new Dictionary<double, Dictionary<double, Point>>();
+        }
 
         /// <summary>
         /// Called when the Calculate button is clicked to project the coordinates.
@@ -301,36 +304,42 @@ namespace MapProjector
                 return;
             }
 
-            this.cols = (int)Math.Ceiling((this.east - this.west) / this.interval) + 1;
-            this.rows = (int)Math.Ceiling((this.north - this.south) / this.interval + 1);
+            Reset();
 
-            this.Meridian = (this.west + this.east) / 2;
-            this.Projection.Origin = new Point(this.Meridian, (this.north + this.south) / 2);
+            int rows = (int)Math.Ceiling((this.north - this.south) / this.interval + 1);
+            for (int j = 0; j < rows; j++)
+            {
+                this.lats.Add(this.north - j * this.interval);
+            }
+
+            int cols = (int)Math.Ceiling((this.east - this.west) / this.interval) + 1;
+            for (int i = 0; i < cols; i++)
+            {
+                this.longs.Add(this.west + i * this.interval);
+            }
+
+            this.Projection.Origin = new Point(
+                (this.west + this.east) / 2,
+                (this.north + this.south) / 2
+                );
 
             double s = 0;
             double n = 0;
             double w = 0;
             double e = 0;
-            Point geoCoord;
             Point cartCoord;
 
-            this.geoCoords = new Point[this.cols, this.rows];
-            this.cartCoords = new Dictionary<double, List<Point>>();
-            double rowLat;
-
-            for (int j = 0; j < this.rows; j++)
+            foreach (int j in this.lats)
             {
                 // Start at the top.
-                List<Point> row = new List<Point>();
-                rowLat = this.north - interval * j;
-                this.cartCoords.Add(rowLat, row);
+                Dictionary<double, Point> cartRow = new Dictionary<double, Point>();
+                this.cartCoords.Add(j, cartRow);
 
-                for (int i = 0; i < this.cols; i++)
+                foreach (int i in this.longs)
                 {
                     // Go from left to right.
-                    geoCoord = new Point(this.west + interval * i, this.north - interval * j);
-                    cartCoord = this.Projection.ConvertToCart(geoCoord);
-                    row.Add(cartCoord);
+                    cartCoord = this.Projection.ConvertToCart(new Point(i, j));
+                    cartRow.Add(i, cartCoord);
 
                     // Keep track of the extremes in each cardinal direction.
                     if ((i == 0 && j == 0) || cartCoord.Y < s)
@@ -358,17 +367,24 @@ namespace MapProjector
 
             // Set paper orientation and get the scaling factor.
             this.Orientation = (sn > we) ? Orientation.Portrait : Orientation.Landscape;
-            double scale = GetScaleToPaperSize(we, sn);
+            this.scale = Math.Min(GetPaperHeight() / sn, GetPaperWidth() / we);
 
             // Scale the grid to fit the paper.
-            foreach (List<Point> row in this.cartCoords.Values)
+            Dictionary<double, Dictionary<double, Point>> newDict = new Dictionary<double, Dictionary<double, Point>>();
+            foreach (double key in this.cartCoords.Keys)
             {
-                for (int i = 0; i < row.Count; i++)
+                Dictionary<double, Point> newRow = new Dictionary<double, Point>();
+                foreach (KeyValuePair<double, Point> kvp in this.cartCoords[key])
                 {
-                    Point point = row[i];
-                    row[i] = ScalePoint(point, scale);
+                    Point point = kvp.Value;
+                    newRow[kvp.Key] = ScalePoint(point);
                 }
+                newDict.Add(key, newRow);
             }
+
+            this.cartCoords = newDict;
+
+            FillPaper();
 
             DumpOutput();
         }
@@ -385,85 +401,255 @@ namespace MapProjector
             return result;
         }
 
-        private double GetScaleToPaperSize(double we, double sn)
+        private Point ScalePoint(Point point)
         {
-            int paperLongSide = (this.PaperSize == PaperSize.Custom)
-                ? Math.Max(this.customPaperSizeDim1, this.customPaperSizeDim2)
-                : this.PaperSize.LongSide();
-            int paperShortSide = (this.PaperSize == PaperSize.Custom)
-                ? Math.Min(this.customPaperSizeDim1, this.customPaperSizeDim2)
-                : this.PaperSize.ShortSide();
-
-            // Set paper orientation
-            return (this.Orientation == Orientation.Portrait)
-                ? Math.Min((paperLongSide / sn), (paperShortSide / we))
-                : Math.Min((paperShortSide / sn), (paperLongSide / we));
-        }
-
-        private Point ScalePoint(Point point, double scale)
-        {
-            int paperWidth = 0, paperHeight = 0;
-            switch (this.Orientation)
-            {
-                case Orientation.Landscape:
-                    paperWidth = this.PaperSize.LongSide();
-                    paperHeight = this.PaperSize.ShortSide();
-                    break;
-                case Orientation.Portrait:
-                    paperWidth = this.PaperSize.ShortSide();
-                    paperHeight = this.PaperSize.LongSide();
-                    break;
-            }
-
             return new Point(
-                scale * point.X + paperWidth / 2, // left to right
-                paperHeight / 2 - scale * point.Y // top to bottom
+                this.scale * point.X + GetPaperWidth() / 2, // left to right
+                GetPaperHeight() / 2 - this.scale * point.Y // top to bottom
                 );
         }
 
-        private Point[,] Transform(Point[,] input)
+        private void FillPaper()
         {
-            Point[,] result = new Point[input.GetLength(1), input.GetLength(0)];
-
-            for(int i = 0; i < input.GetLength(0); i++)
+            // First, try to add points along the existing lines of latitude.
+            foreach (KeyValuePair<double, Dictionary<double, Point>> kvp in this.cartCoords)
             {
-                for (int j = 0; j < input.GetLength(1); j++)
+                FillRow(kvp.Key, kvp.Value);
+            }
+
+            // Next, add rows to the top.
+            Dictionary<double, Point> newRow = new Dictionary<double, Point>();
+            Point newPoint;
+
+            double northernmost = this.north;
+            Dictionary<double, Point> topRow = this.cartCoords[northernmost];
+
+            while (true)
+            {
+                northernmost += this.interval;
+                foreach (double colLong in this.longs)
                 {
-                    result[j, i] = input[i, j];
+                    newPoint = ScalePoint(
+                        this.Projection.ConvertToCart(
+                            new Point(colLong, northernmost)
+                            ));
+                    if (newPoint.X >= 0 && newPoint.X <= GetPaperWidth()
+                        && newPoint.Y >= 0 && newPoint.Y <= GetPaperHeight())
+                    {
+                        newRow.Add(colLong, newPoint);
+                    }
+                }
+
+                FillRow(northernmost, newRow);
+
+                topRow = newRow;
+                newRow = new Dictionary<double, Point>();
+
+                if (topRow.Count == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    this.lats.Add(northernmost);
+                    this.cartCoords.Add(northernmost, topRow);
                 }
             }
 
-            return result;
+            // Finally, add rows to the bottom.
+            double southernmost = this.south;
+            Dictionary<double, Point> bottomRow = this.cartCoords[southernmost];
+
+            while (true)
+            {
+                southernmost -= this.interval;
+                foreach (double colLong in topRow.Keys)
+                {
+                    newPoint = ScalePoint(
+                        this.Projection.ConvertToCart(
+                            new Point(colLong, southernmost)
+                            ));
+                    if (newPoint.X >= 0 && newPoint.X <= GetPaperWidth()
+                        && newPoint.Y >= 0 && newPoint.Y <= GetPaperHeight())
+                    {
+                        newRow.Add(colLong, newPoint);
+                    }
+                }
+
+                FillRow(southernmost, newRow);
+
+                bottomRow = newRow;
+                newRow = new Dictionary<double, Point>();
+
+                if (bottomRow.Count == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    this.lats.Add(southernmost);
+                    this.cartCoords.Add(southernmost, bottomRow);
+                }
+            }
+
+            // Sort top-to-bottom.
+            this.lats = this.lats.OrderByDescending(d => d).ToList();
+            this.cartCoords.SortDictionaryByKeyDescending();
+        }
+
+        private void FillRow(double rowLat, Dictionary<double, Point> row)
+        {
+            double westernmost = this.longs.First();
+            double easternmost = this.longs.Last();
+            Point newPoint;
+
+            // Add points until we reach the edge of the paper.
+            // We assume horizontal symmetry.
+            while (true)
+            {
+                westernmost -= this.interval;
+                newPoint = ScalePoint(
+                        this.Projection.ConvertToCart(
+                            new Point(westernmost, rowLat)
+                            ));
+
+                if (newPoint.X < 0
+                    || newPoint.Y < 0
+                    || newPoint.Y > GetPaperHeight())
+                {
+                    // The new point is off the left, top, or bottom of the
+                    // paper, so we're done with this row.
+                    break;
+                }
+
+                // Add the points to each end of the row.
+                if (!this.longs.Contains(westernmost))
+                {
+                    this.longs.Add(westernmost);
+                    this.longs = this.longs.OrderBy(d => d).ToList();
+                }
+                row.Add(westernmost, newPoint);
+
+                easternmost += this.interval;
+                if (!this.longs.Contains(easternmost))
+                {
+                    this.longs.Add(easternmost);
+                    this.longs = this.longs.OrderBy(d => d).ToList();
+                }
+                row.Add(easternmost, ScalePoint(
+                        this.Projection.ConvertToCart(
+                            new Point(easternmost, rowLat)
+                            )));
+            }
+
+            // Sort left-to-right.
+            row.SortDictionaryByKeyAscending();
         }
 
         private void DumpOutput()
         {
             StringBuilder output = new StringBuilder();
 
+            string longs = "      "
+                + string.Join(
+                    " ",
+                    this.longs.Select(d => d.ToString().PadLeft(9)).ToList()
+                    );
+            output.AppendLine(longs);
+
             if (this.cartCoords != null)
             {
+                this.lats = this.lats.OrderByDescending(d => d).ToList();
                 this.cartCoords = this.cartCoords.SortDictionaryByKeyDescending();
 
-                foreach (List<Point> row in this.cartCoords.Values)
+                foreach (double rowLat in this.lats)
                 {
-                    output.AppendLine(GetOutputLine(row));
+                    output.AppendLine(GetOutputLine(rowLat));
                 }
             }
 
             this.CartCoordsOutput = output.ToString();
         }
 
-        private string GetOutputLine(List<Point> row)
+        private string GetOutputLine(double rowLat)
         {
-            string[] outputLine = new string[this.cols];
+            List<string> outputLine = new List<string>();
+            Dictionary<double, Point> row = this.cartCoords[rowLat];
 
-            for(int i = 0; i < row.Count; i++)
+            foreach (double colLong in this.longs)
             {
-                outputLine[i] = row[i].ToString();
+                if (row.Keys.Contains(colLong))
+                {
+                    outputLine.Add(row[colLong].ToString());
+                }
+                else
+                {
+                    outputLine.Add(placeholder);
+                }
             }
 
-            return string.Join(", ", outputLine);
+            return rowLat.ToString().PadLeft(3) + " | " + string.Join(" ", outputLine);
         }
+
+        #region Paper orientation
+
+        private int GetPaperHeight()
+        {
+            switch (this.Orientation)
+            {
+                case Orientation.Landscape:
+                    return GetPaperShortSide();
+                case Orientation.Portrait:
+                default:
+                    return GetPaperLongSide();
+            }
+        }
+
+        private int GetPaperWidth()
+        {
+            switch (this.Orientation)
+            {
+                case Orientation.Landscape:
+                    return GetPaperLongSide();
+                case Orientation.Portrait:
+                default:
+                    return GetPaperShortSide();
+            }
+        }
+
+        private int GetPaperLongSide()
+        {
+            switch (this.PaperSize)
+            {
+                case PaperSize.A2:
+                    return 594;
+                case PaperSize.A3:
+                    return 420;
+                case PaperSize.A4:
+                    return 297;
+                case PaperSize.Custom:
+                default:
+                    return Math.Max(this.customPaperSizeDim1, this.customPaperSizeDim2);
+            }
+        }
+
+        private int GetPaperShortSide()
+        {
+            switch (this.PaperSize)
+            {
+                case PaperSize.A2:
+                    return 420;
+                case PaperSize.A3:
+                    return 297;
+                case PaperSize.A4:
+                    return 210;
+                case PaperSize.Custom:
+                default:
+                    return Math.Min(this.customPaperSizeDim1, this.customPaperSizeDim2);
+            }
+        }
+
+        #endregion
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
