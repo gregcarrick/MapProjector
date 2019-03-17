@@ -80,14 +80,14 @@ namespace MapProjector
         {
             string first = String.Format(
                 CultureInfo.InvariantCulture,
-                "{0:0}",
+                "{0:0.0}",
                 this.x
-                ).PadLeft(3);
+                ).PadLeft(5);
             string second = String.Format(
                 CultureInfo.InvariantCulture,
-                "{0:0}",
+                "{0:0.0}",
                 this.y
-                ).PadLeft(3);
+                ).PadLeft(5);
             return "(" + first + "," + second + ")";
         }
     }

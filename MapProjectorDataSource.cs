@@ -56,7 +56,7 @@ namespace MapProjector
     /// </summary>
     public class MapProjectorDataSource : Component, INotifyPropertyChanged
     {
-        private const string placeholder = "         ";
+        private const string placeholder = "             ";
 
         private double north;
         private double south;
@@ -463,7 +463,7 @@ namespace MapProjector
             while (true)
             {
                 southernmost -= this.interval;
-                foreach (double colLong in topRow.Keys)
+                foreach (double colLong in this.longs)
                 {
                     newPoint = ScalePoint(
                         this.Projection.ConvertToCart(
@@ -553,7 +553,7 @@ namespace MapProjector
             string longs = "      "
                 + string.Join(
                     " ",
-                    this.longs.Select(d => d.ToString().PadLeft(9)).ToList()
+                    this.longs.Select(d => d.ToString().PadLeft(13)).ToList()
                     );
             output.AppendLine(longs);
 
