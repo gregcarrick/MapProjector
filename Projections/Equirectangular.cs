@@ -13,7 +13,13 @@ namespace MapProjector.Projections
     /// </remarks>
     public class Equirectangular : IProjection
     {
-        private int phi_1 = 0;
+        public string Description
+        {
+            get
+            {
+                return "Equirectangular";
+            }
+        }
 
         /// <inheritdoc/>
         public Point Origin { get; set; }
@@ -22,17 +28,7 @@ namespace MapProjector.Projections
         /// The standard parallel of the equirectangular projection, in degrees.
         /// 0 by default.
         /// </summary>
-        public int StandardParallel
-        {
-            get
-            {
-                return this.phi_1;
-            }
-            set
-            {
-                this.phi_1 = value;
-            }
-        }
+        public int StandardParallel { get; set; } = 0;
 
         /// <inheritdoc/>
         public Point ConvertToCart(Point geo)
@@ -44,7 +40,7 @@ namespace MapProjector.Projections
             double phi_0 = Helpers.DegToRad(this.Origin.Phi);
 
             return new Point(
-                Math.Cos(Helpers.DegToRad(this.phi_1)) * (lambda - lambda_0),
+                Math.Cos(Helpers.DegToRad(this.StandardParallel)) * (lambda - lambda_0),
                 phi - phi_0
                 );
         }
@@ -58,7 +54,7 @@ namespace MapProjector.Projections
             double phi_0 = this.Origin.Phi;
 
             return new Point(
-                (x / Math.Cos(phi_1)) + lambda_0,
+                (x / Math.Cos(StandardParallel)) + lambda_0,
                 y + phi_0
                 );
         }

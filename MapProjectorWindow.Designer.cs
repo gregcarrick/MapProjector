@@ -17,6 +17,10 @@
         {
             if (disposing && (components != null))
             {
+                if (this.saveAsToolStripMenuItem != null)
+                {
+                    this.saveAsToolStripMenuItem.Click -= saveAsToolStripMenuItem_Click;
+                }
                 if (this.orthographicToolStripMenuItem != null)
                 {
                     this.orthographicToolStripMenuItem.Click -= projectionToolStripMenuItem_Click;
@@ -38,9 +42,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            MapProjector.Projections.Orthographic orthographic = new MapProjector.Projections.Orthographic();
-            MapProjector.Projections.PlateCarree plateCarree = new MapProjector.Projections.PlateCarree();
+            MapProjector.Projections.Orthographic orthographic1 = new MapProjector.Projections.Orthographic();
+            MapProjector.Projections.PlateCarree plateCarree1 = new MapProjector.Projections.PlateCarree();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chooseProjectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orthographicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plateCarreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,9 +76,9 @@
             this.a3PaperButton = new System.Windows.Forms.RadioButton();
             this.a4PaperButton = new System.Windows.Forms.RadioButton();
             this.resultsGroupBox = new System.Windows.Forms.GroupBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.orientationText = new System.Windows.Forms.TextBox();
             this.orientationLabel = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.boundsGroupBox.SuspendLayout();
             this.intervalGroupBox.SuspendLayout();
@@ -83,12 +89,27 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
             this.chooseProjectionToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(701, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveAsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
             // 
             // chooseProjectionToolStripMenuItem
             // 
@@ -102,15 +123,15 @@
             // orthographicToolStripMenuItem
             // 
             this.orthographicToolStripMenuItem.Name = "orthographicToolStripMenuItem";
-            this.orthographicToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.orthographicToolStripMenuItem.Tag = orthographic;
+            this.orthographicToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.orthographicToolStripMenuItem.Tag = orthographic1;
             this.orthographicToolStripMenuItem.Text = "Orthographic";
             // 
             // plateCarreeToolStripMenuItem
             // 
             this.plateCarreeToolStripMenuItem.Name = "plateCarreeToolStripMenuItem";
-            this.plateCarreeToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.plateCarreeToolStripMenuItem.Tag = plateCarree;
+            this.plateCarreeToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.plateCarreeToolStripMenuItem.Tag = plateCarree1;
             this.plateCarreeToolStripMenuItem.Text = "Plate Carrée";
             // 
             // northLabel
@@ -235,9 +256,9 @@
             this.eastTextBox.TabIndex = 7;
             this.eastTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.eastTextBox.Value = 0D;
-            // 
+            //
             // intervalGroupBox
-            // 
+            //
             this.intervalGroupBox.Controls.Add(this.radioButton10);
             this.intervalGroupBox.Controls.Add(this.radioButton5);
             this.intervalGroupBox.Controls.Add(this.radioButton2);
@@ -315,9 +336,9 @@
             this.projectButton.TabIndex = 12;
             this.projectButton.Text = "Project";
             this.projectButton.UseVisualStyleBackColor = true;
-            // 
+            //
             // paperGroupBox
-            // 
+            //
             this.paperGroupBox.Controls.Add(this.xLabel);
             this.paperGroupBox.Controls.Add(this.customPaperSizeNumericTextBox2);
             this.paperGroupBox.Controls.Add(this.customPaperSizeNumericTextBox1);
@@ -420,10 +441,9 @@
             // 
             // resultsGroupBox
             // 
-            this.resultsGroupBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-                | System.Windows.Forms.AnchorStyles.Left
-                | System.Windows.Forms.AnchorStyles.Right
-                | System.Windows.Forms.AnchorStyles.Top;
+            this.resultsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.resultsGroupBox.Controls.Add(this.richTextBox1);
             this.resultsGroupBox.Controls.Add(this.orientationText);
             this.resultsGroupBox.Controls.Add(this.orientationLabel);
@@ -433,6 +453,21 @@
             this.resultsGroupBox.TabIndex = 13;
             this.resultsGroupBox.TabStop = false;
             this.resultsGroupBox.Text = "Results";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.dataSource, "CartCoordsOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.ForeColor = System.Drawing.Color.Black;
+            this.richTextBox1.Location = new System.Drawing.Point(9, 47);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(517, 368);
+            this.richTextBox1.TabIndex = 13;
+            this.richTextBox1.Text = "";
+            this.richTextBox1.WordWrap = false;
             // 
             // orientationText
             // 
@@ -454,31 +489,15 @@
             this.orientationLabel.TabIndex = 12;
             this.orientationLabel.Text = "Paper Orientation:";
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-                | System.Windows.Forms.AnchorStyles.Left
-                | System.Windows.Forms.AnchorStyles.Right
-                | System.Windows.Forms.AnchorStyles.Top;
-            this.richTextBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.dataSource, "CartCoordsOutput", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.ForeColor = System.Drawing.Color.Black;
-            this.richTextBox1.Location = new System.Drawing.Point(9, 47);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(517, 368);
-            this.richTextBox1.TabIndex = 13;
-            this.richTextBox1.Text = "";
-            this.richTextBox1.WordWrap = false;
-            // 
             // MapProjectorWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(701, 445);
             this.Controls.Add(this.resultsGroupBox);
-            this.Controls.Add(this.paperGroupBox);
-            this.Controls.Add(this.projectButton);
             this.Controls.Add(this.intervalGroupBox);
+            this.Controls.Add(this.projectButton);
+            this.Controls.Add(this.paperGroupBox);
             this.Controls.Add(this.boundsGroupBox);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -490,12 +509,12 @@
             this.menuStrip1.PerformLayout();
             this.boundsGroupBox.ResumeLayout(false);
             this.boundsGroupBox.PerformLayout();
+            this.resultsGroupBox.ResumeLayout(false);
+            this.resultsGroupBox.PerformLayout();
             this.intervalGroupBox.ResumeLayout(false);
             this.intervalGroupBox.PerformLayout();
             this.paperGroupBox.ResumeLayout(false);
             this.paperGroupBox.PerformLayout();
-            this.resultsGroupBox.ResumeLayout(false);
-            this.resultsGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -535,6 +554,8 @@
         private System.Windows.Forms.TextBox orientationText;
         private System.Windows.Forms.Label orientationLabel;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
 

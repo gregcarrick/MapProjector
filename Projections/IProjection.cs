@@ -2,6 +2,8 @@
 {
     public interface IProjection
     {
+        string Description { get; }
+
         /// <summary>
         /// The point at which the sphere and tangent plane intersect.
         /// </summary>
