@@ -14,6 +14,14 @@ namespace MapProjector.Projections
         /// <inheritdoc/>
         public Point Origin { get; set; }
 
+        public string Description
+        {
+            get
+            {
+                return "Orthographic";
+            }
+        }
+
         /// <summary>
         /// The orthographic projection does not use standard parallels.
         /// </summary>

@@ -10,48 +10,6 @@ using MapProjector.Projections;
 namespace MapProjector
 {
     /// <summary>
-    /// Allows the user to choose from pre-set paper sizes or set custom side lengths.
-    /// </summary>
-    public enum PaperSize
-    {
-        /// <summary>
-        /// Standard size A2.
-        /// </summary>
-        A2,
-
-        /// <summary>
-        /// Standard size A3.
-        /// </summary>
-        A3,
-
-        /// <summary>
-        /// Standard size A4.
-        /// </summary>
-        A4,
-
-        /// <summary>
-        /// Custom width and length.
-        /// </summary>
-        Custom,
-    }
-
-    /// <summary>
-    /// Paper orientation: Landscape or Portrait.
-    /// </summary>
-    public enum Orientation
-    {
-        /// <summary>
-        /// Landscape.
-        /// </summary>
-        Landscape,
-
-        /// <summary>
-        /// Portrait.
-        /// </summary>
-        Portrait,
-    }
-
-    /// <summary>
     /// The data source bound to the <see cref="MapProjectorWindow"/>.
     /// </summary>
     public class MapProjectorDataSource : Component, INotifyPropertyChanged
@@ -592,6 +550,31 @@ namespace MapProjector
         }
 
         #region Paper orientation
+
+        public string GetPaperDimensionsText()
+        {
+            StringBuilder result = new StringBuilder();
+
+            StringBuilder dimensions = new StringBuilder();
+            dimensions.Append(this.GetPaperWidth());
+            dimensions.Append("mm x ");
+            dimensions.Append(this.GetPaperHeight());
+            dimensions.Append("mm");
+
+            if (this.PaperSize != PaperSize.Custom)
+            {
+                result.Append(this.PaperSize);
+                result.Append(" (");
+                result.Append(dimensions);
+                result.Append(")");
+            }
+            else
+            {
+                result = dimensions;
+            }
+
+            return result.ToString();
+        }
 
         private int GetPaperHeight()
         {
